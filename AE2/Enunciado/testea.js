@@ -21,6 +21,6 @@ function fetchCharacterInfo(characterId) {
     });
 }
 
-for (let i = 1; i <= 3; i++) {
-  fetchCharacterInfo(i);
+for (let i = 0; i < 3; i++) {
+  fetchCharacterInfo(characterIds[i]);
 }
