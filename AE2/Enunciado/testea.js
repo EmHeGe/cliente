@@ -4,6 +4,9 @@ const baseUrl = 'https://rickandmortyapi.com/api/';
 let characterId = 1;
 let characterEndpoint = `character/${characterId}`;
 
+// Variable para la card
+let card = document.getElementsByClassName('item-0');
+
 // Realizar una solicitud HTTP a la API
 function fetchCharacterInfo(characterId) {
   let characterEndpoint = `character/${characterId}`;
@@ -15,12 +18,19 @@ function fetchCharacterInfo(characterId) {
     .then(data => {
       // Aquí puedes manejar los datos de la respuesta de la API
       console.log(data);
+      let testPj = data;
     })
     .catch(error => {
       console.error('Hubo un error al hacer la solicitud a la API: ' + error);
     });
 }
 
-for (let i = 0; i < 3; i++) {
-  fetchCharacterInfo(characterIds[i]);
+for (let i = 1; i <= 3; i++) {
+  fetchCharacterInfo(i);
 }
+
+/* fetchCharacterInfo(1);
+card.style.backgroundImage = 'url(' + card.image; */
+console.log(card[0]);
+/* setTimeout(console.log(testPj),
+   3000); */
