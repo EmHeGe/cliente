@@ -10,6 +10,8 @@ let characterId = 0;
 let limite = 3;
 // Variable con el boton de mostrar más
 let botones = Array.from(document.getElementsByTagName('button'));
+// Variable boton ampliar
+let botonesAmpliar = Array.from(document.getElementsByClassName('botonera'));
 
 
 // Realizar una solicitud HTTP a la API
@@ -68,6 +70,12 @@ const ponerClick = function (){
         limite = 20;
         printCards(limite);
     })
+}
+
+const ponerAmpliar = function(){
+    botonesAmpliar.map(element => addEventListener('click', function(){
+        //Aquí la modal
+    }))
 }
 
 printCards(limite);
