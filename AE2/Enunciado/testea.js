@@ -1,36 +1,62 @@
+// Constantes y variables y tal
 const baseUrl = 'https://rickandmortyapi.com/api/';
+// Constante para la card original
+let card = document.getElementsByClassName('card')[0];
+// Constante para el contenedor
+const container = document.getElementsByClassName('grid-container')[0];
+// Endpoint para obtener información de un personaje. Debo inicializarlo porque sino explota
+let characterId = 0;
+// Limite para recorrer cards
+let limite = 3;
+// Variable con el boton de mostrar más
 
-// Endpoint para obtener información de un personaje (por ejemplo, el personaje con ID 1)
-let characterId = 1;
-let characterEndpoint = `character/${characterId}`;
 
-// Variable para la card
-let card = document.getElementsByClassName('item-0');
 
 // Realizar una solicitud HTTP a la API
-function fetchCharacterInfo(characterId) {
-  let characterEndpoint = `character/${characterId}`;
-  let url = baseUrl + characterEndpoint;
+const fetchCharacterInfo = async (characterId) => {
+    let characterEndpoint = `character/${characterId}`;
+    let url = baseUrl + characterEndpoint;
 
-  // Realizar una solicitud HTTP a la API
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      // Aquí puedes manejar los datos de la respuesta de la API
-      console.log(data);
-      let testPj = data;
-    })
-    .catch(error => {
-      console.error('Hubo un error al hacer la solicitud a la API: ' + error);
-    });
+    // Realizar una solicitud HTTP a la API
+    try {
+        const response = await fetch(url);
+        if (response.ok) {
+            let responseData = await response.json();
+            return responseData;
+        }
+    } catch (error) {
+        console.error('Hubo un error al hacer la solicitud a la API: ' + error);
+    }
+
 }
 
-for (let i = 1; i <= 3; i++) {
-  fetchCharacterInfo(i);
+const printCards = async (limite) => {
+    // Esta igual es reutilizable si le meto otra variable para el tope y me saca 3 o 20 según
+    for (let i = 1; i <= limite; i++) {
+        let character = await fetchCharacterInfo(i);
+        // Clona la card original
+        let nuevaCard = card.cloneNode(true);
+        // Me cargo la vacía
+        card.remove();
+        // Variable elemento foto
+        let cardImg = nuevaCard.querySelector('.item-0');
+        cardImg.style.backgroundImage = 'url(' + character.image + ')';
+        container.appendChild(nuevaCard);
+        // Textos
+        let cardGender = nuevaCard.querySelector('.item-1');
+        cardGender.innerHTML = character.gender;
+        let cardSpecies = nuevaCard.querySelector('.item-2');
+        cardSpecies.innerHTML = character.species;
+        let cardName = nuevaCard.querySelector('.item-3');
+        cardName.innerHTML = character.name;
+    }
 }
 
-/* fetchCharacterInfo(1);
-card.style.backgroundImage = 'url(' + card.image; */
-console.log(card[0]);
-/* setTimeout(console.log(testPj),
-   3000); */
+const removeCards = function (){
+    let cards = document.getElementsByClassName('card');
+    while (cards.length > 0) {
+        cards[0].remove();
+    }
+}
+
+printCards(limite);

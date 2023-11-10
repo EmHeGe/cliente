@@ -1,12 +1,15 @@
 // Constantes y variables y tal
 const baseUrl = 'https://rickandmortyapi.com/api/';
-const contenedor = document.body;
 // Constante para la card original
 let card = document.getElementsByClassName('card')[0];
 // Constante para el contenedor
 const container = document.getElementsByClassName('grid-container')[0];
 // Endpoint para obtener información de un personaje. Debo inicializarlo porque sino explota
 let characterId = 0;
+// Limite para recorrer cards
+let limite = 3;
+// Variable con el boton de mostrar más
+let botones = Array.from(document.getElementsByTagName('button'));
 
 
 // Realizar una solicitud HTTP a la API
@@ -27,9 +30,9 @@ const fetchCharacterInfo = async (characterId) => {
 
 }
 
-const printCards = async () => {
+const printCards = async (limite) => {
     // Esta igual es reutilizable si le meto otra variable para el tope y me saca 3 o 20 según
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= limite; i++) {
         let character = await fetchCharacterInfo(i);
         // Clona la card original
         let nuevaCard = card.cloneNode(true);
@@ -46,7 +49,27 @@ const printCards = async () => {
         cardSpecies.innerHTML = character.species;
         let cardName = nuevaCard.querySelector('.item-3');
         cardName.innerHTML = character.name;
+        let cardStatus = nuevaCard.querySelector('.item-4');
+        cardStatus.innerHTML = character.status;
     }
 }
 
-printCards();
+const removeCards = function (){
+    let cards = document.getElementsByClassName('card');
+    while (cards.length > 0) {
+        cards[0].remove();
+    }
+}
+
+const ponerClick = function (){
+    //removeCards();
+    botones[0].addEventListener('click', function() {
+        removeCards();
+        limite = 20;
+        printCards(limite);
+    })
+}
+
+printCards(limite);
+ponerClick();
+console.log(botones);
